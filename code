@@ -1,0 +1,35 @@
+import matplotlib.pyplot as plt
+
+# inputs
+N = int(input('N = '))
+S = [int(x) for x in input('S = ').split()]
+
+Nim = [0]*(N+1) 
+
+def mex(optionSet): # returns mex value of a set
+    for i in range(len(S) + 1):
+        if i not in optionSet:
+            return i
+        
+# Recursively set the Nim value for every starting position, by calculating mex value of the options set oS       
+oS = [] 
+for i in range(N+1):
+    oS.clear()
+    for j in S: # oS will contain the Nim values of all options from pos i
+        if(i - j >= 0):
+            oS.append(Nim[i-j]) 
+    Nim[i] = mex(oS)
+
+# Results
+if Nim[N] == 0:
+    print('Losing position')
+else:
+    print('Winning position with Nim value: ', Nim[N])
+    
+# Plots
+t = range(N+1)
+plt.scatter(t, Nim)
+plt.xticks(range(0, N+1, int((N+1)/5)))
+plt.yticks(range(max(Nim) + 1))
+plt.xlabel('Starting position')
+plt.ylabel('Nim value')
